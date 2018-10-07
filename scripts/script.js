@@ -1,5 +1,6 @@
 const topSection = document.getElementById('top'),
   startBtn = document.getElementById('startBtn'),
+  problem = document.getElementById('problem'),
   answers = document.getElementsByClassName('answer'),
   body = document.getElementById('body'),
   modeSelect = document.getElementById('mode-btn-container'),
@@ -7,6 +8,18 @@ const topSection = document.getElementById('top'),
   mediumMode = document.getElementById('medium'),
   hardMode = document.getElementById('hard');
 
+  let winningColor;
+
+
+function init(){
+  topSection.removeAttribute('style');
+  problem.classList.add('hidden');
+  for (let i = 0; i < answers.length; i++) {
+    answers[i].removeAttribute('style');
+    answers[i].textContent = `Default`
+    
+  }
+}
 
 startBtn.addEventListener('click', generateRandomColors);
 
@@ -19,6 +32,7 @@ modeSelect.addEventListener('click', (e) => {
     }
     //ADDS CLASS TO CORRECT BUTTON
     e.target.classList.add('enabled'); 
+    init();
   }
 })
 
@@ -28,7 +42,7 @@ body.addEventListener('click', (e) =>{
     let guess = hexToRGB(e.target.textContent)
 
     // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
-    if(guess === topSection.style.background){
+    if(guess === winningColor || e.target.textContent === winningColor){
       //WINNER LOGIC
       //STYLE ALL ANSWERS
       //STOP TIMER 
@@ -43,10 +57,17 @@ body.addEventListener('click', (e) =>{
 
 function chooseWinningColor(colorArray){
   const rand = Math.floor(Math.random() * answers.length);
-  const winningColor = colorArray[rand];
+  winningColor = colorArray[rand];
 
-  topSection.style.background = winningColor;
-  console.log(topSection.style.background)
+  if(easyMode.classList.contains('enabled')){
+    problem.textContent = winningColor;
+    problem.classList.remove('hidden');
+  } else if (mediumMode.classList.contains('enabled')) {
+    topSection.style.background = winningColor;
+  } else if (hardMode.classList.contains('enabled')) {
+    topSection.style.background = winningColor;
+  }
+  console.log(winningColor)
   return winningColor;
 }
 
@@ -73,7 +94,6 @@ function generateRandomColors(){
       
     }
     chooseWinningColor(colorArray);
-    return colorArray;
 }
 
 function newColor(){
