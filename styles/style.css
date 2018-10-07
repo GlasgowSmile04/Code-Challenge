@@ -49,7 +49,7 @@
   border: 1px solid black;
   border-radius: 35px;
   margin: 2%;
-  align-self: center;
+  justify-content: center;
 }
 .container-bottom {
   display: flex;
@@ -61,4 +61,7 @@
 .container-modes {
   display: flex;
   flex-direction: column;
+}
+.hidden {
+  display: none;
 }
