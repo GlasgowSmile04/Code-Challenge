@@ -1,0 +1,63 @@
+.container-main {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  background: #ccc;
+  color: #666;
+}
+.container-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+  height: 20%;
+  overflow: hidden;
+}
+.container-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.container-problem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.container-high-scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+.container-timer {
+
+}
+.timer {
+
+}
+.container-body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 60%;
+}
+.answer {
+  text-align: center;
+  width: 40%;
+  height: 40%;
+  border: 1px solid black;
+  border-radius: 50px;
+  margin: 2%;
+  align-self: center;
+}
+.container-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  height: 20%;
+}
+.container-modes {
+  display: flex;
+  flex-direction: column;
+}
