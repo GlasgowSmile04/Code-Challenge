@@ -7,9 +7,11 @@ const topSection = document.getElementById('top'),
   easyMode = document.getElementById('easy'),
   mediumMode = document.getElementById('medium'),
   hardMode = document.getElementById('hard');
+  scoreDisplay = document.getElementById('scoreDisplay');
 
-  let winningColor;
-
+  let winningColor,
+    score = 0,
+    inGame = false;
 
 function init(){
   topSection.removeAttribute('style');
@@ -37,21 +39,33 @@ modeSelect.addEventListener('click', (e) => {
 })
 
 body.addEventListener('click', (e) =>{
-  //CHECKS IF YOU ARE CLICKING ON AN ANSWER
+  if(inGame === true){
+    //CHECKS IF YOU ARE CLICKING ON AN ANSWER
   if(e.target.classList.contains('answer') || e.target.parentElement.classList.contains('answer')){
     let guess = hexToRGB(e.target.textContent)
 
     // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
     if(guess === winningColor || e.target.textContent === winningColor){
       //WINNER LOGIC
+      winningColor = 'null';
+      inGame = false;
       //STYLE ALL ANSWERS
+      
+      //ADD TO SCORE
+      score++
+      scoreDisplay.textContent = score;
+
       //STOP TIMER 
       console.log('winner');
     } else {
       //FAILURE LOGIC
+      //STYLE ALL ANSWERS
+      //REMOVE LIFE
+      //STOP TIMER
       console.log('failure');
     }
   }
+  } else { return };
 })
 
 
@@ -75,6 +89,7 @@ function chooseWinningColor(colorArray){
 
 function generateRandomColors(){
     const colorArray = [];
+    inGame = true;
     for (let i = 0; i < answers.length; i++) {
       colorArray.push(newColor());
       //CHECKS MODES
