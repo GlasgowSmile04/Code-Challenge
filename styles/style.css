@@ -68,7 +68,6 @@ html, body {
   display: flex;
   width: 30%;
   height: 30%;
-  background: #fff;
   border: 1px solid black;
   border-radius: 35px;
   margin: 2%;
@@ -76,6 +75,9 @@ html, body {
   align-items: center;
   font-size: 3.5vw;
 
+}
+.answer-background{
+  background: #fff;
 }
 /* .answerText {
   font-size: 2.5rem;

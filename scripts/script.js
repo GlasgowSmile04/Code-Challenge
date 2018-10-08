@@ -6,6 +6,7 @@ const topSection = document.getElementById('top'),
   highScoresBtn = document.getElementById('highScores'),
   problem = document.getElementById('problem'),
   answers = document.getElementsByClassName('answerText'),
+  answersContainer = document.getElementsByClassName('answer'),
   body = document.getElementById('body'),
   modeSelect = document.getElementById('mode-btn-container'),
   easyMode = document.getElementById('easy'),
@@ -46,9 +47,15 @@ function init(){
   scoreDisplay.textContent = 0;
   inGame = false;
   inRound = false;
+  startBtn.classList.remove('hidden');
+  infoBtn.classList.remove('hidden');
+  newPlayerBtn.classList.remove('hidden');
+  highScoresBtn.classList.remove('hidden');
 
-  for (let i = 0; i < answers.length; i++) {
-    answers[i].removeAttribute('style');   
+  for (let i = 0; i < answersContainer.length; i++) {
+    answersContainer[i].removeAttribute('style');
+    answers[i].classList.remove('hidden');
+    answers[i].removeAttribute('style');
   }
   answers[0].textContent = 'THE'   
   answers[1].textContent = 'HEXADECIMAL'
@@ -65,11 +72,12 @@ startBtn.addEventListener('click', () => {
   newPlayerBtn.classList.add('hidden');
   highScoresBtn.classList.add('hidden');
   problem.classList.remove('hidden');
-  problem.textContent = 'Guess this color:';
+  if(!easyMode.classList.contains('enabled')){
+    problem.textContent = 'Guess this color:';
+  }
 });
 
 nextBtn.addEventListener('click', () => {
-  generateRandomColors()
   inRound = true;
   for (let i = 0; i < answers.length; i++) {
     answers[i].removeAttribute('style'); 
@@ -79,6 +87,7 @@ nextBtn.addEventListener('click', () => {
     return;
   } 
   else { problem.textContent = 'Guess this color:'; };
+  generateRandomColors()
 });
 
 modeSelect.addEventListener('click', (e) => {
@@ -175,26 +184,34 @@ function chooseWinningColor(colorArray){
 
 
 function generateRandomColors(){
-    const colorArray = [];
-    for (let i = 0; i < answers.length; i++) {
-      colorArray.push(newColor());
-      //CHECKS MODES
-      if(easyMode.classList.contains('enabled')){
-        answers[i].textContent = colorArray[i];
-        answers[i].style.fontSize = 0;
-        answers[i].style.background = colorArray[i];
-      } else if (mediumMode.classList.contains('enabled')) {
-        answers[i].textContent = colorArray[i];
-      } else if (hardMode.classList.contains('enabled')) {
-        answers[i].textContent = colorArray[i];
-        answers[i].style.color = newColor();
-      } else { 
-          alert('Please select your difficulty level.')
-          return;
-      }
-      
-    }
-    chooseWinningColor(colorArray);
+  const colorArray = [];
+  for (let i = 0; i < answersContainer.length; i++) {
+  colorArray.push(newColor());
+  //CHECKS MODES
+  if(easyMode.classList.contains('enabled')){
+    
+
+      answers[i].classList.add('hidden');
+      answersContainer[i].style.background = colorArray[i];
+
+  } else if (mediumMode.classList.contains('enabled')) {
+
+      // answers[i].classList.remove('hidden');
+      answers[i].textContent = colorArray[i];
+
+    
+  } else if (hardMode.classList.contains('enabled')) {
+
+      // answers[i].classList.remove('hidden');
+      answers[i].textContent = colorArray[i];
+      answers[i].style.color = newColor();
+
+  } else { 
+      alert('Please select your difficulty level.')
+      return;
+  }
+}
+  chooseWinningColor(colorArray);
 }
 
 function newColor(){
