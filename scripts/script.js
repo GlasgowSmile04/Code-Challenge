@@ -31,7 +31,6 @@ function lifeCounter(){
       if(lives[i].classList.contains('hidden') || lives[i].classList.contains('depleted')){continue;}
       else {
         currentCount++;
-        console.log(currentCount);
       }
     }
   }
@@ -39,9 +38,15 @@ function lifeCounter(){
   return lifeCount;
 }
 
+function removeLife(){
+  let x = lifeCount - 1
+  lives[x].classList.add('hidden');
+}
+
 function init(){
   topSection.removeAttribute('style');
   problem.classList.add('hidden');
+  nextBtn.classList.add('hidden');
   problem.textContent = '';
   score = 0;
   scoreDisplay.textContent = 0;
@@ -57,10 +62,32 @@ function init(){
     answers[i].classList.remove('hidden');
     answers[i].removeAttribute('style');
   }
-  answers[0].textContent = 'THE'   
-  answers[1].textContent = 'HEXADECIMAL'
-  answers[2].textContent = 'GUESSING'
-  answers[3].textContent = 'GAME'
+  answers[0].textContent = 'THE';
+  answers[1].textContent = 'HEXADECIMAL';
+  answers[2].textContent = 'GUESSING';
+  answers[3].textContent = 'GAME';
+
+  if(easyMode.classList.contains('enabled')){
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.remove('hidden');
+    lives[4].classList.remove('hidden');
+  }
+  else if(mediumMode.classList.contains('enabled')){
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.remove('hidden');
+    lives[4].classList.add('hidden');
+  }
+  else if(hardMode.classList.contains('enabled')){
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.add('hidden');
+    lives[4].classList.add('hidden');
+  }
 }
 
 startBtn.addEventListener('click', () => { 
@@ -98,7 +125,7 @@ modeSelect.addEventListener('click', (e) => {
       modeSelect.children[i].classList.remove('enabled');
     }
     //ADDS CLASS TO CORRECT BUTTON
-    e.target.classList.add('enabled'); 
+    e.target.classList.add('enabled');
     init();
   }
 })
@@ -119,14 +146,15 @@ body.addEventListener('click', (e) =>{
         score++
         scoreDisplay.textContent = score;
         //STOP TIMER 
+
       } else {
         //FAILURE LOGIC
         inRound = false;
         //STYLE ALL ANSWERS
         failureStyle();
         //REMOVE LIFE
-        // removeLife();
-        // checkLives();
+        removeLife();
+        lifeCounter();
         //STOP TIMER
       }
     }
@@ -164,7 +192,6 @@ function winnerStyle(){
   } 
 }
 
-
 function chooseWinningColor(colorArray){
   const rand = Math.floor(Math.random() * answers.length);
   winningColor = colorArray[rand];
@@ -181,31 +208,19 @@ function chooseWinningColor(colorArray){
   return winningColor;
 }
 
-
-
 function generateRandomColors(){
   const colorArray = [];
   for (let i = 0; i < answersContainer.length; i++) {
   colorArray.push(newColor());
   //CHECKS MODES
   if(easyMode.classList.contains('enabled')){
-    
-
       answers[i].classList.add('hidden');
       answersContainer[i].style.background = colorArray[i];
-
   } else if (mediumMode.classList.contains('enabled')) {
-
-      // answers[i].classList.remove('hidden');
       answers[i].textContent = colorArray[i];
-
-    
   } else if (hardMode.classList.contains('enabled')) {
-
-      // answers[i].classList.remove('hidden');
       answers[i].textContent = colorArray[i];
       answers[i].style.color = newColor();
-
   } else { 
       alert('Please select your difficulty level.')
       return;
