@@ -1,29 +1,94 @@
 const topSection = document.getElementById('top'),
   startBtn = document.getElementById('startBtn'),
+  nextBtn = document.getElementById('nextBtn'),
+  infoBtn = document.getElementById('infoBtn'),
+  newPlayerBtn = document.getElementById('newPlayer'),
+  highScoresBtn = document.getElementById('highScores'),
   problem = document.getElementById('problem'),
-  answers = document.getElementsByClassName('answer'),
+  answers = document.getElementsByClassName('answerText'),
+  answersContainer = document.getElementsByClassName('answer'),
   body = document.getElementById('body'),
   modeSelect = document.getElementById('mode-btn-container'),
   easyMode = document.getElementById('easy'),
   mediumMode = document.getElementById('medium'),
   hardMode = document.getElementById('hard');
   scoreDisplay = document.getElementById('scoreDisplay');
+  lives = document.getElementsByClassName('life-wrapper');
 
-  let winningColor,
-    score = 0,
-    inGame = false;
+let winningColor,
+  lifeCount = 4,
+  score = 0,
+  inGame = false,
+  inRound = false;
+
+function lifeCounter(){
+  let currentCount = 0;
+  if(lifeCount === 0){
+    //END THE GAME
+  } 
+  else {
+    for (let i = 0; i < lives.length; i++) {
+      if(lives[i].classList.contains('hidden') || lives[i].classList.contains('depleted')){continue;}
+      else {
+        currentCount++;
+        console.log(currentCount);
+      }
+    }
+  }
+  lifeCount = currentCount;
+  return lifeCount;
+}
 
 function init(){
   topSection.removeAttribute('style');
   problem.classList.add('hidden');
-  for (let i = 0; i < answers.length; i++) {
+  problem.textContent = '';
+  score = 0;
+  scoreDisplay.textContent = 0;
+  inGame = false;
+  inRound = false;
+  startBtn.classList.remove('hidden');
+  infoBtn.classList.remove('hidden');
+  newPlayerBtn.classList.remove('hidden');
+  highScoresBtn.classList.remove('hidden');
+
+  for (let i = 0; i < answersContainer.length; i++) {
+    answersContainer[i].removeAttribute('style');
+    answers[i].classList.remove('hidden');
     answers[i].removeAttribute('style');
-    answers[i].textContent = `Default`
-    
   }
+  answers[0].textContent = 'THE'   
+  answers[1].textContent = 'HEXADECIMAL'
+  answers[2].textContent = 'GUESSING'
+  answers[3].textContent = 'GAME'
 }
 
-startBtn.addEventListener('click', generateRandomColors);
+startBtn.addEventListener('click', () => { 
+  generateRandomColors();
+  inGame = true;
+  inRound = true;
+  startBtn.classList.add('hidden');
+  infoBtn.classList.add('hidden');
+  newPlayerBtn.classList.add('hidden');
+  highScoresBtn.classList.add('hidden');
+  problem.classList.remove('hidden');
+  if(!easyMode.classList.contains('enabled')){
+    problem.textContent = 'Guess this color:';
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  inRound = true;
+  for (let i = 0; i < answers.length; i++) {
+    answers[i].removeAttribute('style'); 
+  }
+  nextBtn.classList.add('hidden');
+  if(easyMode.classList.contains('enabled')){
+    return;
+  } 
+  else { problem.textContent = 'Guess this color:'; };
+  generateRandomColors()
+});
 
 modeSelect.addEventListener('click', (e) => {
   //CHECKS IF YOU'RE SELECTING A MODE
@@ -39,34 +104,65 @@ modeSelect.addEventListener('click', (e) => {
 })
 
 body.addEventListener('click', (e) =>{
-  if(inGame === true){
+  if(inRound === true){
     //CHECKS IF YOU ARE CLICKING ON AN ANSWER
-  if(e.target.classList.contains('answer') || e.target.parentElement.classList.contains('answer')){
-    let guess = hexToRGB(e.target.textContent)
-
-    // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
-    if(guess === winningColor || e.target.textContent === winningColor){
-      //WINNER LOGIC
-      winningColor = 'null';
-      inGame = false;
-      //STYLE ALL ANSWERS
-      
-      //ADD TO SCORE
-      score++
-      scoreDisplay.textContent = score;
-
-      //STOP TIMER 
-      console.log('winner');
-    } else {
-      //FAILURE LOGIC
-      //STYLE ALL ANSWERS
-      //REMOVE LIFE
-      //STOP TIMER
-      console.log('failure');
+    if(e.target.classList.contains('answer') || e.target.parentElement.classList.contains('answer')){
+      let guess = hexToRGB(e.target.textContent)
+      nextBtn.classList.remove('hidden')
+      // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
+      if(guess === winningColor || e.target.textContent === winningColor){
+        //WINNER LOGIC
+        inRound = false;
+        //STYLE ALL ANSWERS
+        winnerStyle();
+        //ADD TO SCORE
+        score++
+        scoreDisplay.textContent = score;
+        //STOP TIMER 
+      } else {
+        //FAILURE LOGIC
+        inRound = false;
+        //STYLE ALL ANSWERS
+        failureStyle();
+        //REMOVE LIFE
+        // removeLife();
+        // checkLives();
+        //STOP TIMER
+      }
     }
-  }
   } else { return };
 })
+
+function failureStyle(){
+  if(easyMode.classList.contains('enabled')){
+    console.log('Mild Mode Failure');
+  } else {
+    problem.classList.remove('hidden');
+    problem.textContent = 'Incorrect!';
+    for (let i = 0; i < answers.length; i++) {
+      if (answers[i].textContent === winningColor) {
+        answers[i].style.color = winningColor;
+        answers[i].textContent = winningColor;
+      } else {
+        answers[i].style.color = winningColor;
+        answers[i].textContent = 'Incorrect';
+      }
+    }
+  } 
+}
+
+function winnerStyle(){
+  if(easyMode.classList.contains('enabled')){
+    console.log('Mild Mode Success');
+  } else {
+    for (let i = 0; i < answers.length; i++) {
+      answers[i].style.color = winningColor;
+      answers[i].textContent = winningColor;
+    }
+    problem.classList.remove('hidden');
+    problem.textContent = 'Corrent!';
+  } 
+}
 
 
 function chooseWinningColor(colorArray){
@@ -88,27 +184,34 @@ function chooseWinningColor(colorArray){
 
 
 function generateRandomColors(){
-    const colorArray = [];
-    inGame = true;
-    for (let i = 0; i < answers.length; i++) {
-      colorArray.push(newColor());
-      //CHECKS MODES
-      if(easyMode.classList.contains('enabled')){
-        answers[i].textContent = colorArray[i];
-        answers[i].style.fontSize = 0;
-        answers[i].style.background = colorArray[i];
-      } else if (mediumMode.classList.contains('enabled')) {
-        answers[i].textContent = colorArray[i];
-      } else if (hardMode.classList.contains('enabled')) {
-        answers[i].textContent = colorArray[i];
-        answers[i].style.color = newColor();
-      } else { 
-          alert('Please select your difficulty level.')
-          return;
-      }
-      
-    }
-    chooseWinningColor(colorArray);
+  const colorArray = [];
+  for (let i = 0; i < answersContainer.length; i++) {
+  colorArray.push(newColor());
+  //CHECKS MODES
+  if(easyMode.classList.contains('enabled')){
+    
+
+      answers[i].classList.add('hidden');
+      answersContainer[i].style.background = colorArray[i];
+
+  } else if (mediumMode.classList.contains('enabled')) {
+
+      // answers[i].classList.remove('hidden');
+      answers[i].textContent = colorArray[i];
+
+    
+  } else if (hardMode.classList.contains('enabled')) {
+
+      // answers[i].classList.remove('hidden');
+      answers[i].textContent = colorArray[i];
+      answers[i].style.color = newColor();
+
+  } else { 
+      alert('Please select your difficulty level.')
+      return;
+  }
+}
+  chooseWinningColor(colorArray);
 }
 
 function newColor(){
