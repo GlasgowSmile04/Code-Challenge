@@ -17,6 +17,7 @@
   </div>
   <div class="container-problem">
     <button class="start-btn" id="startBtn">Start</button>
+    <button class="next-btn hidden" id="nextBtn">Next Question</button>
     <h1 class="hidden" id="problem">TEST</h1>
   </div>
   <div class="container-high-scores">
@@ -28,10 +29,10 @@
 </section>
 
 <section class="container-body" id="body">
-  <div class="answer">Answer 1</div>
-  <div class="answer">Answer 2</div>
-  <div class="answer">Answer 3</div>
-  <div class="answer">Answer 4</div>
+  <div class="answer"><span class="answerText">THE</span></div>
+  <div class="answer"><span class="answerText">HEXADECIMAL</span></div>
+  <div class="answer"><span class="answerText">GUESSING</span></div>
+  <div class="answer"><span class="answerText">GAME</span></div>
 </section>
 
 <section class="container-bottom" id="bototm">
@@ -42,6 +43,16 @@
         <button class="mode-btns enabled" id="medium">Spicy</button>
         <button class="mode-btns" id="hard">Inferno</button>
     </div>
+  </div>
+  <div class="container-lives-section">
+    <h4>Lives:</h4>
+    <div class="container-lives">
+        <div class="life-wrapper" id="life1"><div class="lives"></div></div>
+        <div class="life-wrapper" id="life2"><div class="lives" ></div></div> 
+        <div class="life-wrapper" id="life3"><div class="lives" ></div></div> 
+        <div class="life-wrapper" id="life4"><div class="lives" ></div></div> 
+        <div class="life-wrapper hidden" id="life5"><div class="lives" ></div></div> 
+    </div>  
   </div>
   <div class="container-score">
     <h4>Score</h4>
