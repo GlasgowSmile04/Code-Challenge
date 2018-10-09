@@ -15,16 +15,19 @@ body = document.getElementById('body'),
 modeSelect = document.getElementById('mode-btn-container'),
 easyMode = document.getElementById('easy'),
 mediumMode = document.getElementById('medium'),
-hardMode = document.getElementById('hard');
-scoreDisplay = document.getElementById('scoreDisplay');
+hardMode = document.getElementById('hard'),
+scoreDisplay = document.getElementById('scoreDisplay'),
 lives = document.getElementsByClassName('life-wrapper');
+
 
 let winningColor,
   lifeCount = 4,
   score = 0,
   finalScore,
   endGame = false,
-  inRound = false;
+  inRound = false,
+  colorArray = [];
+  
 
 /////////////////////
 // EVENT LISTENERS //
@@ -58,10 +61,10 @@ nextBtn.addEventListener('click', () => {
     }
     nextBtn.classList.add('hidden');
     if(easyMode.classList.contains('enabled')){
-      return;
+      problem.removeAttribute('style');
     } 
     else { problem.textContent = 'Guess this color:'; };
-    generateRandomColors();
+      generateRandomColors();
 });
 
 modeSelect.addEventListener('click', (e) => {
@@ -89,7 +92,9 @@ modeSelect.addEventListener('click', (e) => {
 })
 
 
-
+///////////////
+// FUNCTIONS //
+///////////////
 
 function lifeCounter(){
   if(lifeCount === 0){
@@ -118,37 +123,32 @@ function removeLife(){
 }
 
 
-
-
-
-
 function clickable(e){
   if(inRound === true){
+
     //CHECKS IF YOU ARE CLICKING ON AN ANSWER
     if(e.target.classList.contains('answer') || e.target.parentElement.classList.contains('answer')){
       let guess = hexToRGB(e.target.textContent)
       console.log(e.target.textContent);
+
       // console.log(hexToRGB(problem.textContent));
       nextBtn.classList.remove('hidden')
+
       // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
       if(guess === winningColor || e.target.textContent === winningColor){
+       
         //WINNER LOGIC
-
-        //STYLE ALL ANSWERS
         winnerStyle();
-        //ADD TO SCORE
         score++
         scoreDisplay.textContent = score;
-        //STOP TIMER 
+        //STOP TIMER *****
 
       } else {
         //FAILURE LOGIC
-
-        //STYLE ALL ANSWERS
         failureStyle();
-        //REMOVE LIFE
         removeLife();
-        //STOP TIMER
+        //STOP TIMER ******
+        
       }
     }
   } else { return };
@@ -157,7 +157,18 @@ function clickable(e){
 function failureStyle(){
   body.removeEventListener('click', clickable);
   if(easyMode.classList.contains('enabled')){
-    console.log('Mild Mode Failure');
+    for (let i = 0; i < answers.length; i++) {
+      
+
+      if(answers[i].textContent !== winningColor){
+        answers[i].textContent = 'Incorrect';
+        answers[i].classList.remove('hidden'); 
+        answers[i].classList.add('game-over');
+      } else {
+        answers[i].classList.remove('hidden');
+        answers[i].classList.add('text-shadow');
+      }
+    }
   } else {
     problem.classList.remove('hidden');
     problem.textContent = 'Incorrect!';
@@ -194,7 +205,6 @@ function chooseWinningColor(colorArray){
   const rand = Math.floor(Math.random() * answers.length);
   winningColor = colorArray[rand];
 
-
   if(easyMode.classList.contains('enabled')){
     problem.textContent = winningColor;
     problem.classList.remove('hidden');
@@ -209,11 +219,13 @@ function chooseWinningColor(colorArray){
 }
 
 function generateRandomColors(){
-  const colorArray = [];
+  colorArray = [];
   for (let i = 0; i < answersContainer.length; i++) {
   colorArray.push(newColor());
+  
   //CHECKS MODES
   if(easyMode.classList.contains('enabled')){
+    answers[i].classList.remove('game-over', 'text-shadow');
     answers[i].classList.add('hidden');  
     answers[i].textContent = colorArray[i];
     answersContainer[i].style.background = colorArray[i];
