@@ -22,6 +22,11 @@ html, body{
   overflow: hidden;
   font-size: 2vw;
   color: #fff;
+  text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
 }
 .container-btns {
   display: flex;

@@ -1,4 +1,9 @@
-const topSection = document.getElementById('top'),
+function init(){
+
+  //////////////////
+  // DECLARATIONS //
+  //////////////////
+  const topSection = document.getElementById('top'),
   startBtn = document.getElementById('startBtn'),
   nextBtn = document.getElementById('nextBtn'),
   infoBtn = document.getElementById('infoBtn'),
@@ -15,12 +20,119 @@ const topSection = document.getElementById('top'),
   scoreDisplay = document.getElementById('scoreDisplay');
   lives = document.getElementsByClassName('life-wrapper');
 
-let winningColor,
-  lifeCount = 4,
-  score = 0,
-  finalScore,
-  endGame = false,
-  inRound = false;
+  let winningColor,
+    lifeCount = 4,
+    score = 0,
+    finalScore,
+    endGame = false,
+    inRound = false;
+
+  /////////////////////
+  // EVENT LISTENERS //
+  /////////////////////
+  startBtn.addEventListener('click', () => { 
+    body.addEventListener('click', clickable);
+    generateRandomColors();
+    endGame = false;
+    inRound = true;
+    startBtn.classList.add('hidden');
+    infoBtn.classList.add('hidden');
+    newPlayerBtn.classList.add('hidden');
+    highScoresBtn.classList.add('hidden');
+    problem.classList.remove('hidden');
+    score = 0
+    scoreDisplay.textContent = 0;
+    if(endGame === false){
+      for (let i = 0; i < answers.length; i++) {
+        answers[i].classList.remove('game-over');
+      }
+    }
+    if(!easyMode.classList.contains('enabled')){
+      problem.textContent = 'Guess this color:';
+    }
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    body.addEventListener('click', clickable);
+      for (let i = 0; i < answers.length; i++) {
+        answers[i].removeAttribute('style'); 
+      }
+      nextBtn.classList.add('hidden');
+      if(easyMode.classList.contains('enabled')){
+        return;
+      } 
+      else { problem.textContent = 'Guess this color:'; };
+      generateRandomColors();
+  });
+  
+  modeSelect.addEventListener('click', (e) => {
+    //CHECKS IF YOU'RE SELECTING A MODE
+    if(e.target.classList.contains('mode-btns')){ 
+      if(endGame === true){
+        body.removeEventListener('click', clickable);
+        topSection.removeAttribute('style');
+        startBtn.textContent = "Start";
+        problem.classList.add('hidden');
+        for (let i = 0; i < answers.length; i++) {
+          answers[i].classList.remove('game-over');
+        }
+      }
+      //REMOVES CLASS FROM ALL
+      for (let i = 0; i < modeSelect.children.length; i++) {
+        modeSelect.children[i].classList.remove('enabled');
+      }
+      //ADDS CLASS TO CORRECT BUTTON
+  
+      e.target.classList.add('enabled');
+      init();
+      reset();
+    }
+  })
+
+  if(endGame === false && inRound === true){
+    if(confirm('Are you sure you want to abandon this game?')){
+      topSection.removeAttribute('style');
+      problem.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+      problem.textContent = '';
+      score = 0
+      scoreDisplay.textContent = 0;
+      inRound = false;
+      startBtn.textContent = 'Start';
+      startBtn.classList.remove('hidden');
+      infoBtn.classList.remove('hidden');
+      newPlayerBtn.classList.remove('hidden');
+      highScoresBtn.classList.remove('hidden');
+      reset();
+    }
+  } 
+  else if (endGame === false) {
+    topSection.removeAttribute('style');
+    problem.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+    problem.textContent = '';
+    score = 0
+    scoreDisplay.textContent = 0;
+    inRound = false;
+    startBtn.textContent = 'Start';
+    startBtn.classList.remove('hidden');
+    infoBtn.classList.remove('hidden');
+    newPlayerBtn.classList.remove('hidden');
+    highScoresBtn.classList.remove('hidden');
+    reset();
+  }
+  else if(endGame === true){
+    nextBtn.classList.add('hidden');
+    startBtn.classList.remove('hidden');
+    infoBtn.classList.remove('hidden');
+    newPlayerBtn.classList.remove('hidden');
+    highScoresBtn.classList.remove('hidden');
+    score = 0;
+    reset();
+  }
+
+}
+
 
 function lifeCounter(){
   if(lifeCount === 0){
@@ -51,64 +163,7 @@ function removeLife(){
 
 
 
-startBtn.addEventListener('click', () => { 
-  body.addEventListener('click', clickable);
-  generateRandomColors();
-  endGame = false;
-  inRound = true;
-  startBtn.classList.add('hidden');
-  infoBtn.classList.add('hidden');
-  newPlayerBtn.classList.add('hidden');
-  highScoresBtn.classList.add('hidden');
-  problem.classList.remove('hidden');
-  score = 0
-  scoreDisplay.textContent = 0;
-  if(endGame === false){
-    for (let i = 0; i < answers.length; i++) {
-      answers[i].classList.remove('game-over');
-    }
-  }
-  if(!easyMode.classList.contains('enabled')){
-    problem.textContent = 'Guess this color:';
-  }
-});
 
-nextBtn.addEventListener('click', () => {
-  body.addEventListener('click', clickable);
-  for (let i = 0; i < answers.length; i++) {
-    answers[i].removeAttribute('style'); 
-  }
-  nextBtn.classList.add('hidden');
-  if(easyMode.classList.contains('enabled')){
-    return;
-  } 
-  else { problem.textContent = 'Guess this color:'; };
-  generateRandomColors();
-});
-
-modeSelect.addEventListener('click', (e) => {
-  //CHECKS IF YOU'RE SELECTING A MODE
-  if(e.target.classList.contains('mode-btns')){ 
-    if(endGame === true){
-      body.removeEventListener('click', clickable);
-      topSection.removeAttribute('style');
-      startBtn.textContent = "Start";
-      problem.classList.add('hidden');
-      for (let i = 0; i < answers.length; i++) {
-        answers[i].classList.remove('game-over');
-      }
-    }
-    //REMOVES CLASS FROM ALL
-    for (let i = 0; i < modeSelect.children.length; i++) {
-      modeSelect.children[i].classList.remove('enabled');
-    }
-    //ADDS CLASS TO CORRECT BUTTON
-
-    e.target.classList.add('enabled');
-    init();
-    reset();
-  }
-})
 
 function clickable(e){
   if(inRound === true){
@@ -239,49 +294,6 @@ function hexToRGB(hex){
   return result
 }
 
-function init(){
-  if(endGame === false && inRound === true){
-    if(confirm('Are you sure you want to abandon this game?')){
-      topSection.removeAttribute('style');
-      problem.classList.add('hidden');
-      nextBtn.classList.add('hidden');
-      problem.textContent = '';
-      score = 0
-      scoreDisplay.textContent = 0;
-      inRound = false;
-      startBtn.textContent = 'Start';
-      startBtn.classList.remove('hidden');
-      infoBtn.classList.remove('hidden');
-      newPlayerBtn.classList.remove('hidden');
-      highScoresBtn.classList.remove('hidden');
-      reset();
-    }
-  } 
-  else if (endGame === false) {
-    topSection.removeAttribute('style');
-    problem.classList.add('hidden');
-    nextBtn.classList.add('hidden');
-    problem.textContent = '';
-    score = 0
-    scoreDisplay.textContent = 0;
-    inRound = false;
-    startBtn.textContent = 'Start';
-    startBtn.classList.remove('hidden');
-    infoBtn.classList.remove('hidden');
-    newPlayerBtn.classList.remove('hidden');
-    highScoresBtn.classList.remove('hidden');
-    reset();
-  }
-  else if(endGame === true){
-    nextBtn.classList.add('hidden');
-    startBtn.classList.remove('hidden');
-    infoBtn.classList.remove('hidden');
-    newPlayerBtn.classList.remove('hidden');
-    highScoresBtn.classList.remove('hidden');
-    score = 0;
-    reset();
-  }
-}
 
 function reset(){
   for (let i = 0; i < answersContainer.length; i++) {
@@ -318,3 +330,5 @@ function reset(){
     lives[4].classList.add('hidden');
   }
 }
+
+init();
