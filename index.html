@@ -14,37 +14,47 @@
   <div class="container-btns">
     <button class="info-btn" id="infoBtn">Info</button>
     <button class="new-player" id="newPlayer">NewPlayer</button>
+    <button class="high-scores" id="highScores">High Scores</button>
   </div>
   <div class="container-problem">
     <button class="start-btn" id="startBtn">Start</button>
+    <button class="next-btn hidden" id="nextBtn">Next Question</button>
+    <h1 class="hidden" id="problem">TEST</h1>
   </div>
-  <div class="container-high-scores">
-   <button class="high-scores" id="highScores">High Scores</button>
-  </div>
+   <div class="container-score">
+      <h4>Score:</h4>
+      <span class="score" id="scoreDisplay">0</span>
+    </div>
 </section>
 <section class="container-timer">
   <div class="timer" id="timer"></div>
 </section>
 
 <section class="container-body" id="body">
-  <div class="answer"><h2 id="answer1">Answer 1</h2></div>
-  <div class="answer"><h2 id="answer2">Answer 2</h2></div>
-  <div class="answer"><h2 id="answer3">Answer 3</h2></div>
-  <div class="answer"><h2 id="answer4">Answer 4</h2></div>
+  <div class="answer"><p class="answerText">THE</p></div>
+  <div class="answer"><p class="answerText">HEXADECIMAL</p></div>
+  <div class="answer"><p class="answerText">GUESSING</p></div>
+  <div class="answer"><p class="answerText">GAME</p></div>
 </section>
 
 <section class="container-bottom" id="bototm">
   <div class="container-modes" id="modes">
-    <h4>Modes</h4>
+    <h4>Modes:</h4>
     <div id="mode-btn-container">
         <button class="mode-btns" id="easy">Mild</button>
-        <button class="mode-btns" id="medium">Spicy</button>
+        <button class="mode-btns enabled" id="medium">Spicy</button>
         <button class="mode-btns" id="hard">Inferno</button>
     </div>
   </div>
-  <div class="container-score" id="score">
-    <h4>Score</h4>
-    <span class="score">0</span>
+  <div class="container-lives-section">
+    <h4>Lives:</h4>
+    <div class="container-lives">
+        <div class="life-wrapper" id="life1"><div class="lives"></div></div>
+        <div class="life-wrapper" id="life2"><div class="lives" ></div></div> 
+        <div class="life-wrapper" id="life3"><div class="lives" ></div></div> 
+        <div class="life-wrapper" id="life4"><div class="lives" ></div></div> 
+        <div class="life-wrapper hidden" id="life5"><div class="lives" ></div></div> 
+    </div>  
   </div>
 </section>
 
