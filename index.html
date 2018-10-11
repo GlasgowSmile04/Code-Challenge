@@ -22,7 +22,7 @@
     <h1 class="hidden" id="problem">TEST</h1>
   </div>
    <div class="container-score">
-      <h4>Score:</h4>
+      <h4 id='scoreName'>Score:</h4>
       <span class="score" id="scoreDisplay">0</span>
     </div>
 </section>
@@ -57,6 +57,31 @@
     </div>  
   </div>
 </section>
+
+
+<!-- NEW USER MODAL  -->
+
+<div id="newUserModal" class="modal">
+
+  <div class="new-user-modal-content">
+    <span id="closeNewUserModal" class="close">&times;</span>
+    <label for="newUserName">
+      <h2>Player Name:</h2>
+    </label>
+    <input type="text" id="newUserName">
+    <button id="newUserSubmit">Submit</button>
+  </div>
+  <div class="new-user-btns-modal-content" id="1">
+    <span id="closeNewUserModal" class="close">&times;</span>
+    <label for="newUserName">
+      <h2>Nonsense</h2>
+    </label>
+    <input type="text" id="newUserName">
+    <button id="newUserSubmit">Submit</button>
+  </div>
+
+</div>
+
 
 </div>
 <script src="scripts/script.js"></script>

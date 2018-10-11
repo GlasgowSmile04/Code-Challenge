@@ -16,8 +16,12 @@ modeSelect = document.getElementById('mode-btn-container'),
 easyMode = document.getElementById('easy'),
 mediumMode = document.getElementById('medium'),
 hardMode = document.getElementById('hard'),
+scoreName = document.getElementById('scoreName'),
 scoreDisplay = document.getElementById('scoreDisplay'),
-lives = document.getElementsByClassName('life-wrapper');
+lives = document.getElementsByClassName('life-wrapper'),
+newUserModal = document.getElementById('newUserModal'),
+newUserSpan = document.getElementsByClassName('close'),
+newUserSubmit = document.getElementById('newUserSubmit');
 
 
 let winningColor,
@@ -26,8 +30,25 @@ let winningColor,
   finalScore,
   endGame = false,
   inRound = false,
-  colorArray = [];
+  colorArray = [],
+  users = [],
+  currentUser;
   
+class User {
+  constructor(name, scores){
+    this.name = name;
+    this.scores = scores;
+  }
+}
+
+// newPlayerBtn.addEventListener('click', () => {createUser();})
+
+function createUser(newUserName){
+  let newUser = new User(newUserName);
+  users.push(newUser);
+  scoreName.textContent = `${newUser.name}\'s Score:`;
+  currentUser = newUser.name;
+}
 
 /////////////////////
 // EVENT LISTENERS //
@@ -98,13 +119,15 @@ modeSelect.addEventListener('click', (e) => {
 
 function lifeCounter(){
   if(lifeCount === 0){
-    //END THE GAME
+    //END THE GAME2``
     endGame = true;
     finalScore = score;
     startBtn.textContent = 'Play Again?'
     resetBoard();
     for (let i = 0; i < answers.length; i++) {
+      answers[i].classList.remove('text-shadow');
       answers[i].classList.add('game-over');
+      
     }
     answers[0].textContent = 'GA';
     answers[1].textContent = 'ME';
@@ -158,8 +181,7 @@ function failureStyle(){
   body.removeEventListener('click', clickable);
   if(easyMode.classList.contains('enabled')){
     for (let i = 0; i < answers.length; i++) {
-      
-
+      answers[i].classList.remove('game-over', 'text-shadow');
       if(answers[i].textContent !== winningColor){
         answers[i].textContent = 'Incorrect';
         answers[i].classList.remove('hidden'); 
@@ -344,3 +366,37 @@ function resetBoard(){
   }
 }
 
+
+
+
+
+newPlayerBtn.onclick = function() {
+    newUserModal.style.display = 'block';
+    let modalBtns = document.getElementById('1');
+    console.log(modalBtns)
+
+    modalBtns.setAttribute('style', 'display: block');
+}
+
+for (let i = 0; i < newUserSpan.length; i++) {
+  newUserSpan[i].onclick = function() {
+    newUserModal.style.display = 'none';
+}
+
+  
+}
+
+
+window.onclick = function(event) {
+    if (event.target == newUserModal) {
+        newUserModal.style.display = 'none';
+    }
+}
+
+newUserSubmit.onclick = function(){
+  let newUserName = document.getElementById('newUserName').value;
+  if (newUserName){
+    createUser(newUserName);
+
+  }
+}
