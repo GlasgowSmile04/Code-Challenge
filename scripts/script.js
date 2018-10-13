@@ -298,27 +298,27 @@ function resetLives(){
     answers[3].textContent = 'GAME';
   if(easyMode.classList.contains('enabled')){
     lifeCount = 5;
-    lives[0].classList.remove('hidden');
-    lives[1].classList.remove('hidden');
-    lives[2].classList.remove('hidden');
-    lives[3].classList.remove('hidden');
-    lives[4].classList.remove('hidden');
+    lives[0].classList.remove('hidden game-over');
+    lives[1].classList.remove('hidden game-over');
+    lives[2].classList.remove('hidden game-over');
+    lives[3].classList.remove('hidden game-over');
+    lives[4].classList.remove('hidden game-over');
   }
   else if(mediumMode.classList.contains('enabled')){
     lifeCount = 4;
-    lives[0].classList.remove('hidden');
-    lives[1].classList.remove('hidden');
-    lives[2].classList.remove('hidden');
-    lives[3].classList.remove('hidden');
-    lives[4].classList.add('hidden');
+    lives[0].classList.remove('hidden game-over');
+    lives[1].classList.remove('hidden game-over');
+    lives[2].classList.remove('hidden game-over');
+    lives[3].classList.remove('hidden game-over');
+    lives[4].classList.add('hidden game-over');
   }
   else if(hardMode.classList.contains('enabled')){
     lifeCount = 3;
-    lives[0].classList.remove('hidden');
-    lives[1].classList.remove('hidden');
-    lives[2].classList.remove('hidden');
-    lives[3].classList.add('hidden');
-    lives[4].classList.add('hidden');
+    lives[0].classList.remove('hidden game-over');
+    lives[1].classList.remove('hidden game-over');
+    lives[2].classList.remove('hidden game-over');
+    lives[3].classList.add('hidden game-over');
+    lives[4].classList.add('hidden game-over');
   }
 }
 
