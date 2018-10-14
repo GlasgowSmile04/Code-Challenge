@@ -13,7 +13,7 @@
 <section class="container-top" id="top">
   <div class="container-btns">
     <button class="info-btn" id="infoBtn">Info</button>
-    <button class="new-player" id="newPlayer">NewPlayer</button>
+    <button class="new-player" id="newPlayer">New Player</button>
     <button class="high-scores" id="highScores">High Scores</button>
   </div>
   <div class="container-problem">
@@ -63,18 +63,18 @@
 
 <div id="newUserModal" class="modal">
 
-  <div class="new-user-modal-content">
+  <div class="new-user-btns-modal-content" id="newUserBtnsModal">
     <span id="closeNewUserModal" class="close">&times;</span>
+    <h2>Who are you?</h2>
+    <button class="add-new-player" id="addNewPlayer">New Player</button>
+    <button class="returning-player" id="returningPlayer">Returning Player</button>
+  </div>
+
+  <div class="new-user-modal-content" id="addNewPlayerModal">
+    <span id="closeNewUserModal" class="close">&times;</span>
+    <h2>Welcome to my game!</h2>
     <label for="newUserName">
       <h2>Player Name:</h2>
-    </label>
-    <input type="text" id="newUserName">
-    <button id="newUserSubmit">Submit</button>
-  </div>
-  <div class="new-user-btns-modal-content" id="1">
-    <span id="closeNewUserModal" class="close">&times;</span>
-    <label for="newUserName">
-      <h2>Nonsense</h2>
     </label>
     <input type="text" id="newUserName">
     <button id="newUserSubmit">Submit</button>

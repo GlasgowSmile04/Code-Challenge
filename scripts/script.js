@@ -21,7 +21,10 @@ scoreDisplay = document.getElementById('scoreDisplay'),
 lives = document.getElementsByClassName('life-wrapper'),
 newUserModal = document.getElementById('newUserModal'),
 newUserSpan = document.getElementsByClassName('close'),
-newUserSubmit = document.getElementById('newUserSubmit');
+newUserSubmit = document.getElementById('newUserSubmit'),
+newUserBtnsModal = document.getElementById('newUserBtnsModal'),
+addNewPlayer = document.getElementById('addNewPlayer'),
+addNewPlayerModal = document.getElementById('addNewPlayerModal');
 
 
 let winningColor,
@@ -31,24 +34,30 @@ let winningColor,
   endGame = false,
   inRound = false,
   colorArray = [],
-  users = [],
+  users = [{name: "Zac", scores: [1, 3, 2, 1]},
+  {name: "Lisa", scores: [1, 2, 1, 5]}],
   currentUser;
   
 class User {
-  constructor(name, scores){
+  constructor(name){
     this.name = name;
-    this.scores = scores;
+    this.scores = [];
   }
 }
 
-// newPlayerBtn.addEventListener('click', () => {createUser();})
 
-function createUser(newUserName){
-  let newUser = new User(newUserName);
-  users.push(newUser);
-  scoreName.textContent = `${newUser.name}\'s Score:`;
-  currentUser = newUser.name;
+function highScore(){
+  let highScore = 0 ;
+	let highScoreArray = [];
+	for(i = 0; i < users.length; i++){
+    for(x = 0; x < users[i].scores.length; x++)
+      if(users[i].scores[x] > highScore){
+        highScore = users[i].scores[x]
+      } else {continue};
 }
+console.log(highScore);
+}
+
 
 /////////////////////
 // EVENT LISTENERS //
@@ -103,7 +112,6 @@ modeSelect.addEventListener('click', (e) => {
     }
     //REMOVES CLASS FROM ALL
     for (let i = 0; i < modeSelect.children.length; i++) {
-      console.log('hello')
       modeSelect.children[i].classList.remove('enabled');
       answers[i].classList.remove('game-over', 'text-shadow')
       answers[i + 1].classList.remove('game-over', 'text-shadow')
@@ -121,13 +129,31 @@ modeSelect.addEventListener('click', (e) => {
 // FUNCTIONS //
 ///////////////
 
+function createUser(newUserName){
+  let newUser = new User(newUserName);
+  users.push(newUser);
+  scoreName.textContent = `${newUser.name}\'s Score:`;
+  currentUser = newUser.name;
+}
+
+function logScore(){
+  if(finalScore !== 0 && currentUser !== undefined){
+    for(i = 0; i < users.length; i++){
+      if(users[i].name === currentUser){
+      users[i].scores.push(finalScore)
+      }
+    }
+  }
+}
+
 function lifeCounter(){
   if(lifeCount === 0){
-    //END THE GAME2``
+    //END THE GAME
     endGame = true;
     finalScore = score;
     startBtn.textContent = 'Play Again?'
     resetBoard();
+    logScore();
     for (let i = 0; i < answers.length; i++) {
       answers[i].classList.remove('text-shadow');
       answers[i].classList.add('game-over');
@@ -156,9 +182,7 @@ function clickable(e){
     //CHECKS IF YOU ARE CLICKING ON AN ANSWER
     if(e.target.classList.contains('answer') || e.target.parentElement.classList.contains('answer')){
       let guess = hexToRGB(e.target.textContent)
-      console.log(e.target.textContent);
 
-      // console.log(hexToRGB(problem.textContent));
       nextBtn.classList.remove('hidden')
 
       // CHECKS IF YOU'VE CLICKED THE CORRECT COLOR
@@ -239,8 +263,6 @@ function chooseWinningColor(colorArray){
   } else if (hardMode.classList.contains('enabled')) {
     topSection.style.background = winningColor;
   }
-  console.log(colorArray);
-  console.log(winningColor)
   return winningColor;
 }
 
@@ -372,14 +394,15 @@ function resetBoard(){
 
 
 
-
+addNewPlayer.onclick = function() {
+  newUserBtnsModal.setAttribute('style', 'display: none');
+  addNewPlayerModal.setAttribute('style', 'display: block');
+  console.log('clicked');
+}
 
 newPlayerBtn.onclick = function() {
     newUserModal.style.display = 'block';
-    let modalBtns = document.getElementById('1');
-    console.log(modalBtns)
-
-    modalBtns.setAttribute('style', 'display: block');
+    newUserBtnsModal.setAttribute('style', 'display: block');
 }
 
 for (let i = 0; i < newUserSpan.length; i++) {
@@ -399,8 +422,9 @@ window.onclick = function(event) {
 
 newUserSubmit.onclick = function(){
   let newUserName = document.getElementById('newUserName').value;
-  if (newUserName){
+  if (newUserName != ''){
     createUser(newUserName);
-
+    newUserModal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
   }
 }
