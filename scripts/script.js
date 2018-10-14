@@ -91,6 +91,7 @@ nextBtn.addEventListener('click', () => {
 modeSelect.addEventListener('click', (e) => {
   //CHECKS IF YOU'RE SELECTING A MODE
   if(e.target.classList.contains('mode-btns')){ 
+
     if(endGame === true){
       body.removeEventListener('click', clickable);
       topSection.removeAttribute('style');
@@ -102,7 +103,10 @@ modeSelect.addEventListener('click', (e) => {
     }
     //REMOVES CLASS FROM ALL
     for (let i = 0; i < modeSelect.children.length; i++) {
+      console.log('hello')
       modeSelect.children[i].classList.remove('enabled');
+      answers[i].classList.remove('game-over', 'text-shadow')
+      answers[i + 1].classList.remove('game-over', 'text-shadow')
     }
     //ADDS CLASS TO CORRECT BUTTON
 
@@ -298,27 +302,27 @@ function resetLives(){
     answers[3].textContent = 'GAME';
   if(easyMode.classList.contains('enabled')){
     lifeCount = 5;
-    lives[0].classList.remove('hidden game-over');
-    lives[1].classList.remove('hidden game-over');
-    lives[2].classList.remove('hidden game-over');
-    lives[3].classList.remove('hidden game-over');
-    lives[4].classList.remove('hidden game-over');
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.remove('hidden');
+    lives[4].classList.remove('hidden');
   }
   else if(mediumMode.classList.contains('enabled')){
     lifeCount = 4;
-    lives[0].classList.remove('hidden game-over');
-    lives[1].classList.remove('hidden game-over');
-    lives[2].classList.remove('hidden game-over');
-    lives[3].classList.remove('hidden game-over');
-    lives[4].classList.add('hidden game-over');
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.remove('hidden');
+    lives[4].classList.add('hidden');
   }
   else if(hardMode.classList.contains('enabled')){
     lifeCount = 3;
-    lives[0].classList.remove('hidden game-over');
-    lives[1].classList.remove('hidden game-over');
-    lives[2].classList.remove('hidden game-over');
-    lives[3].classList.add('hidden game-over');
-    lives[4].classList.add('hidden game-over');
+    lives[0].classList.remove('hidden');
+    lives[1].classList.remove('hidden');
+    lives[2].classList.remove('hidden');
+    lives[3].classList.add('hidden');
+    lives[4].classList.add('hidden');
   }
 }
 
