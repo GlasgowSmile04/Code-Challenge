@@ -1,4 +1,3 @@
-
 //////////////////
 // DECLARATIONS //
 //////////////////
@@ -19,12 +18,15 @@ hardMode = document.getElementById('hard'),
 scoreName = document.getElementById('scoreName'),
 scoreDisplay = document.getElementById('scoreDisplay'),
 lives = document.getElementsByClassName('life-wrapper'),
-newUserModal = document.getElementById('newUserModal'),
-newUserSpan = document.getElementsByClassName('close'),
-newUserSubmit = document.getElementById('newUserSubmit'),
-newUserBtnsModal = document.getElementById('newUserBtnsModal'),
+modal = document.getElementById('modal'),
+newPlayerSpan = document.getElementsByClassName('close'),
+newPlayerSubmit = document.getElementById('newPlayerSubmit'),
+newPlayerBtnsModal = document.getElementById('newPlayerBtnsModal'),
 addNewPlayer = document.getElementById('addNewPlayer'),
-addNewPlayerModal = document.getElementById('addNewPlayerModal');
+addNewPlayerModal = document.getElementById('addNewPlayerModal'),
+returningPlayerBtn = document.getElementById('returningPlayer'),
+returningPlayerModal = document.getElementById('returningPlayerModal'),
+highScoreModal = document.getElementById('highScoreModal');
 
 
 let winningColor,
@@ -34,30 +36,110 @@ let winningColor,
   endGame = false,
   inRound = false,
   colorArray = [],
-  users = [{name: "Zac", scores: [1, 3, 2, 1]},
-  {name: "Lisa", scores: [1, 2, 1, 5]}],
-  currentUser;
+  mode = 'Spicy',
+  players = [],
+  currentPlayer,
+  leaderboard;
   
-class User {
+class Player {
   constructor(name){
     this.name = name;
     this.scores = [];
   }
 }
+class Score {
+  constructor(mode, score){
+    this.mode = mode
+    this.score = score
+  }
+}
+class MildHighScore {
+  constructor(mode, name, score){
+    this.mode = mode
+    this.name = name
+    this.score = score
+  }
+}
+class SpicyHighScore {
+  constructor(mode, name, score){
+    this.mode = mode
+    this.name = name
+    this.score = score
+  }
+}
+class InfernoHighScore {
+  constructor(mode, name, score){
+    this.mode = mode
+    this.name = name
+    this.score = score
+  }
+}
 
+class Leaderboard {
+  constructor(MildHighScore, SpicyHighScore, InfernoHighScore){
+    this.MildHighScore = MildHighScore
+    this.SpicyHighScore = SpicyHighScore
+    this.InfernoHighScore = InfernoHighScore
+  }
+}
+
+                    ////////////////////
+                    //  WORK SPACE    //
+                    ////////////////////
+
+////////////////////////////////////////////////////////////////
+
+
+highScoresBtn.onclick = function(){
+  modal.style.display = 'block';
+  highScoreModal.style.display = 'block'
+}
 
 function highScore(){
-  let highScore = 0 ;
-	let highScoreArray = [];
-	for(i = 0; i < users.length; i++){
-    for(x = 0; x < users[i].scores.length; x++)
-      if(users[i].scores[x] > highScore){
-        highScore = users[i].scores[x]
-      } else {continue};
-}
-console.log(highScore);
+  let mildHighScore = 0,
+  spicyHighScore = 0,
+  infernoHighScore = 0,
+  mildPlayer,
+  spicyPlayer,
+  infernoPlayer;
+
+   
+	for(i = 0; i < players.length; i++){
+    for(x = 0; x < players[i].scores.length; x++){
+      
+      let thisPlayerMode = Object.values(players[i].scores[x])[0],
+      thisPlayerScore = Object.values(players[i].scores[x])[1];
+
+      if (thisPlayerMode === 'Mild') {
+        if(thisPlayerScore > mildHighScore){
+          mildPlayer = players[i].name;
+          mildHighScore = thisPlayerScore;
+        } else {continue};
+
+      } else if (thisPlayerMode === 'Spicy'){
+        if(thisPlayerScore > spicyHighScore){
+          spicyPlayer = players[i].name;
+          spicyHighScore = thisPlayerScore;
+        } else {continue};
+
+      } else {
+        if(thisPlayerScore > infernoHighScore){
+          infernoPlayer = players[i].name;
+          infernoHighScore = thisPlayerScore;
+        } else {continue};
+      }
+    }
+  }
+
+  let mildHS = new MildHighScore('Mild', mildPlayer, mildHighScore),
+  spicyHS = new SpicyHighScore('Spicy', spicyPlayer, spicyHighScore),
+  infernoHS = new InfernoHighScore('Inferno', infernoPlayer, infernoHighScore);
+
+  leaderboard = new Leaderboard(mildHS, spicyHS, infernoHS);
 }
 
+
+////////////////////////////////////////////////////////////////
 
 /////////////////////
 // EVENT LISTENERS //
@@ -119,32 +201,106 @@ modeSelect.addEventListener('click', (e) => {
     //ADDS CLASS TO CORRECT BUTTON
 
     e.target.classList.add('enabled');
+    mode = e.target.textContent;
     resetBoard();
     resetLives();
   }
 })
+
+addNewPlayer.onclick = function() {
+  newPlayerBtnsModal.setAttribute('style', 'display: none');
+  addNewPlayerModal.setAttribute('style', 'display: block');
+}
+
+newPlayerBtn.onclick = function() {
+  let returningPlayerName = document.getElementById('returningPlayerName');
+  let newPlayerName = document.getElementById('newPlayerName');
+  modal.style.display = 'block';
+  newPlayerBtnsModal.setAttribute('style', 'display: block');
+  returningPlayerName.value = '';
+  newPlayerName.value = '';
+}
+
+returningPlayerBtn.onclick = function(){
+  newPlayerBtnsModal.setAttribute('style', 'display: none');
+  returningPlayerModal.setAttribute('style', 'display: block');
+};
+
+for (let i = 0; i < newPlayerSpan.length; i++) {
+  newPlayerSpan[i].onclick = function() {
+    modal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
+    returningPlayerModal.style.display = 'none';
+    highScoreModal.style.display = 'none';
+}}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
+    returningPlayerModal.style.display = 'none';
+    newPlayerBtnsModal.style.display = 'none';
+    highScoreModal.style.display = 'none';
+}}
+
+newPlayerSubmit.onclick = function(){
+  if (newPlayerName.value !== '' && notDuplicatePlayerName(newPlayerName.value)){
+    createPlayer(newPlayerName.value);
+    modal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
+
+  } else {alert('That name is already taken!');
+  };
+  newPlayerName.value = '';
+}
+
+returningPlayerSubmit.onclick = function(){
+  if (returningPlayerName.value !== '' && isDuplicatePlayerName(returningPlayerName.value)){
+    currentPlayer = returningPlayerName.value
+    scoreName.textContent = `${returningPlayerName.value}\'s Score:`;
+    returningPlayerModal.style.display = 'none';
+    modal.style.display = 'none';
+  } else {alert('That player has not been created yet!');
+  };
+  returningPlayerName.value = '';
+}
+
 
 
 ///////////////
 // FUNCTIONS //
 ///////////////
 
-function createUser(newUserName){
-  let newUser = new User(newUserName);
-  users.push(newUser);
-  scoreName.textContent = `${newUser.name}\'s Score:`;
-  currentUser = newUser.name;
+function notDuplicatePlayerName(newPlayerName){
+  for(i = 0; i < players.length; i++){
+    if(newPlayerName !== players[i].name){
+      continue
+    } else { return false };
+  } return true;
+}
+function isDuplicatePlayerName(returningPlayerName){
+  for(i = 0; i < players.length; i++){
+    if(returningPlayerName === players[i].name){
+      return true
+    } else { continue };
+  } return false;
+}
+
+function createPlayer(newPlayerName){
+  let newPlayer = new Player(newPlayerName);
+  players.push(newPlayer);
+  scoreName.textContent = `${newPlayer.name}\'s Score:`;
+  currentPlayer = newPlayer.name;
 }
 
 function logScore(){
-  if(finalScore !== 0 && currentUser !== undefined){
-    for(i = 0; i < users.length; i++){
-      if(users[i].name === currentUser){
-      users[i].scores.push(finalScore)
-      }
-    }
-  }
-}
+  if(finalScore !== 0 && currentPlayer !== undefined){
+    for(i = 0; i < players.length; i++){
+      if(players[i].name === currentPlayer){
+      let newScore = new Score(mode, finalScore)
+      players[i].scores.push(newScore)
+      highScore();
+}}}}
 
 function lifeCounter(){
   if(lifeCount === 0){
@@ -152,12 +308,12 @@ function lifeCounter(){
     endGame = true;
     finalScore = score;
     startBtn.textContent = 'Play Again?'
+
     resetBoard();
     logScore();
     for (let i = 0; i < answers.length; i++) {
       answers[i].classList.remove('text-shadow');
       answers[i].classList.add('game-over');
-      
     }
     answers[0].textContent = 'GA';
     answers[1].textContent = 'ME';
@@ -263,6 +419,8 @@ function chooseWinningColor(colorArray){
   } else if (hardMode.classList.contains('enabled')) {
     topSection.style.background = winningColor;
   }
+  console.log(winningColor)
+  console.log(colorArray)
   return winningColor;
 }
 
@@ -392,39 +550,19 @@ function resetBoard(){
   }
 }
 
+function genericPlayers(){
+  let zac = new Player('Zac');
+  players.push(zac);
+  zac.scores.push(new Score('Mild', 10));
+  zac.scores.push(new Score('Spicy', 8));
+  zac.scores.push(new Score('Inferno', 5));
 
+  let bella = new Player('Bella');
+  players.push(bella);
+  bella.scores.push(new Score('Mild', 15));
+  bella.scores.push(new Score('Spicy', 5));
+  bella.scores.push(new Score('Inferno', 2));
 
-addNewPlayer.onclick = function() {
-  newUserBtnsModal.setAttribute('style', 'display: none');
-  addNewPlayerModal.setAttribute('style', 'display: block');
-  console.log('clicked');
 }
 
-newPlayerBtn.onclick = function() {
-    newUserModal.style.display = 'block';
-    newUserBtnsModal.setAttribute('style', 'display: block');
-}
-
-for (let i = 0; i < newUserSpan.length; i++) {
-  newUserSpan[i].onclick = function() {
-    newUserModal.style.display = 'none';
-}
-
-  
-}
-
-
-window.onclick = function(event) {
-    if (event.target == newUserModal) {
-        newUserModal.style.display = 'none';
-    }
-}
-
-newUserSubmit.onclick = function(){
-  let newUserName = document.getElementById('newUserName').value;
-  if (newUserName != ''){
-    createUser(newUserName);
-    newUserModal.style.display = 'none';
-    addNewPlayerModal.style.display = 'none';
-  }
-}
+genericPlayers();

@@ -61,23 +61,56 @@
 
 <!-- NEW USER MODAL  -->
 
-<div id="newUserModal" class="modal">
-
-  <div class="new-user-btns-modal-content" id="newUserBtnsModal">
-    <span id="closeNewUserModal" class="close">&times;</span>
+<div id="modal" class="modal">
+  
+  <!-- MAIN MODAL -->
+  <div class="new-player-btns-modal-content" id="newPlayerBtnsModal">
+    <span class="close">&times;</span>
     <h2>Who are you?</h2>
     <button class="add-new-player" id="addNewPlayer">New Player</button>
     <button class="returning-player" id="returningPlayer">Returning Player</button>
   </div>
 
-  <div class="new-user-modal-content" id="addNewPlayerModal">
-    <span id="closeNewUserModal" class="close">&times;</span>
+  <!-- CHANGE TO EXISTING PLAYER -->
+  <div class="returning-player-modal-content" id="returningPlayerModal">
+    <span class="close">&times;</span>
+    <h2>Welcome back!</h2>
+      <h2>What was your name again?</h2>
+    <input type="text" id="returningPlayerName">
+    <button id="returningPlayerSubmit">Submit</button>
+  </div>
+  
+  <!-- ADD A NEW PLAYER -->
+  <div class="new-player-modal-content" id="addNewPlayerModal">
+    <span class="close">&times;</span>
     <h2>Welcome to my game!</h2>
-    <label for="newUserName">
       <h2>Player Name:</h2>
-    </label>
-    <input type="text" id="newUserName">
-    <button id="newUserSubmit">Submit</button>
+    <input type="text" id="newPlayerName">
+    <button id="newPlayerSubmit">Submit</button>
+  </div>
+
+  <!-- HIGH SCORES -->
+  <div class="high-score-modal-content" id="highScoreModal">
+    <span class="close">&times;</span>
+    <h2>High Scores!!!</h2>
+    <table>
+      <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Mild</th>
+            <th>Spicy</th>
+            <th>Inferno</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>&nbsp;</td>
+            <td>Mild</td>
+            <td>Spicy</td>
+            <td>Inferno</td>
+          </tr>
+      </tbody>
+    </table>
   </div>
 
 </div>

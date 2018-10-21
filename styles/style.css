@@ -87,13 +87,6 @@ html, body{
   font-size: 3vw;
   background: #fff;
 }
-.answer-background{
-  
-}
-/* .answerText {
-  font-size: 2.5rem;
-
-} */
 .container-bottom {
   display: flex;
   flex-direction: row;
@@ -194,15 +187,34 @@ html, body{
   background-color: rgba(0,0,0,0.4); 
 }
 
-.new-user-modal-content {
+.new-player-modal-content {
   display: none;
   background-color: #fefefe;
   margin: 15% auto; 
   padding: 20px;
   border: 1px solid #888;
   width: 50%; 
+  text-align: center;
 }
-.new-user-btns-modal-content {
+.new-player-btns-modal-content {
+  display: none;
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; 
+  text-align: center;
+}
+.returning-player-modal-content {
+  display: none;
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; 
+  text-align: center;
+}
+.high-score-modal-content {
   display: none;
   background-color: #fefefe;
   margin: 15% auto; 
@@ -224,4 +236,15 @@ html, body{
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+th, td {
+  border: 1px solid #aaa;
+  width: 20vw;
+  margin: 0px;
+}
+
+table {
+  background: #eee;
+  border-collapse: collapse;
 }
