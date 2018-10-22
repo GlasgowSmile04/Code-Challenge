@@ -15,7 +15,8 @@ modeSelect = document.getElementById('mode-btn-container'),
 easyMode = document.getElementById('easy'),
 mediumMode = document.getElementById('medium'),
 hardMode = document.getElementById('hard'),
-scoreName = document.getElementById('scoreName'),
+scoreName = document.getElementsByClassName('scoreName'),
+scoreNameT = document.getElementsByClassName('scoreNameT'),
 scoreDisplay = document.getElementById('scoreDisplay'),
 lives = document.getElementsByClassName('life-wrapper'),
 modal = document.getElementById('modal'),
@@ -26,7 +27,9 @@ addNewPlayer = document.getElementById('addNewPlayer'),
 addNewPlayerModal = document.getElementById('addNewPlayerModal'),
 returningPlayerBtn = document.getElementById('returningPlayer'),
 returningPlayerModal = document.getElementById('returningPlayerModal'),
-highScoreModal = document.getElementById('highScoreModal');
+highScoresBtnsModal = document.getElementById('highScoresBtnsModal'),
+currentHighScoreModal = document.getElementById('currentHighScoreModal'),
+currentHighScoreBtn = document.getElementById('currentHighScoreBtn');
 
 
 let winningColor,
@@ -92,7 +95,12 @@ class Leaderboard {
 
 highScoresBtn.onclick = function(){
   modal.style.display = 'block';
-  highScoreModal.style.display = 'block'
+  highScoresBtnsModal.style.display = 'block'
+}
+
+currentHighScoreBtn.onclick = function(){
+  currentHighScoreModal.style.display = 'block';
+  highScoresBtnsModal.style.display = 'none'
 }
 
 function highScore(){
@@ -226,29 +234,12 @@ returningPlayerBtn.onclick = function(){
   returningPlayerModal.setAttribute('style', 'display: block');
 };
 
-for (let i = 0; i < newPlayerSpan.length; i++) {
-  newPlayerSpan[i].onclick = function() {
-    modal.style.display = 'none';
-    addNewPlayerModal.style.display = 'none';
-    returningPlayerModal.style.display = 'none';
-    highScoreModal.style.display = 'none';
-}}
-
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = 'none';
-    addNewPlayerModal.style.display = 'none';
-    returningPlayerModal.style.display = 'none';
-    newPlayerBtnsModal.style.display = 'none';
-    highScoreModal.style.display = 'none';
-}}
-
 newPlayerSubmit.onclick = function(){
   if (newPlayerName.value !== '' && notDuplicatePlayerName(newPlayerName.value)){
     createPlayer(newPlayerName.value);
     modal.style.display = 'none';
     addNewPlayerModal.style.display = 'none';
-
+    
   } else {alert('That name is already taken!');
   };
   newPlayerName.value = '';
@@ -257,15 +248,39 @@ newPlayerSubmit.onclick = function(){
 returningPlayerSubmit.onclick = function(){
   if (returningPlayerName.value !== '' && isDuplicatePlayerName(returningPlayerName.value)){
     currentPlayer = returningPlayerName.value
-    scoreName.textContent = `${returningPlayerName.value}\'s Score:`;
     returningPlayerModal.style.display = 'none';
     modal.style.display = 'none';
+    for (let i = 0; i < scoreName.length; i++) {
+      scoreName[i].textContent = `${returningPlayerName.value}\'s `;             
+      scoreNameT[i].textContent = `${returningPlayerName.value}`;             
+    }
   } else {alert('That player has not been created yet!');
   };
   returningPlayerName.value = '';
 }
 
+        //////////////////////
+        // CLOSE ALL MODALS //
+        //////////////////////
 
+for (let i = 0; i < newPlayerSpan.length; i++) {
+  newPlayerSpan[i].onclick = function() {
+    modal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
+    returningPlayerModal.style.display = 'none';
+    currentHighScoreModal.style.display = 'none';
+    highScoresBtnsModal.style.display = 'none';
+}}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+    addNewPlayerModal.style.display = 'none';
+    returningPlayerModal.style.display = 'none';
+    newPlayerBtnsModal.style.display = 'none';
+    currentHighScoreModal.style.display = 'none';
+    highScoresBtnsModal.style.display = 'none';
+}}
 
 ///////////////
 // FUNCTIONS //
@@ -289,7 +304,10 @@ function isDuplicatePlayerName(returningPlayerName){
 function createPlayer(newPlayerName){
   let newPlayer = new Player(newPlayerName);
   players.push(newPlayer);
-  scoreName.textContent = `${newPlayer.name}\'s Score:`;
+  for (let i = 0; i < scoreName.length; i++) {
+    scoreName[i].textContent = `${newPlayer.name}\'s `;             
+    scoreNameT[i].textContent = `${newPlayer.name}`;             
+  }
   currentPlayer = newPlayer.name;
 }
 
@@ -540,6 +558,7 @@ function resetBoard(){
     resetLives();
   }
   else if(endGame === true){
+    problem.classList.add('hidden');
     nextBtn.classList.add('hidden');
     startBtn.classList.remove('hidden');
     infoBtn.classList.remove('hidden');

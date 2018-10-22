@@ -15,15 +15,15 @@
     <button class="info-btn" id="infoBtn">Info</button>
     <button class="new-player" id="newPlayer">New Player</button>
     <button class="high-scores" id="highScores">High Scores</button>
+    <button class="next-btn hidden" id="nextBtn">Next Question</button>
   </div>
   <div class="container-problem">
     <button class="start-btn" id="startBtn">Start</button>
-    <button class="next-btn hidden" id="nextBtn">Next Question</button>
     <h1 class="hidden" id="problem">TEST</h1>
   </div>
    <div class="container-score">
-      <h4 id='scoreName'>Score:</h4>
-      <span class="score" id="scoreDisplay">0</span>
+      <h4><span class="scoreName"></span>Score:</h4>
+      <h4><span class="score" id="scoreDisplay">0</span></h4> 
     </div>
 </section>
 <section class="container-timer">
@@ -59,16 +59,16 @@
 </section>
 
 
-<!-- NEW USER MODAL  -->
+<!-- MAIN MODAL  -->
 
 <div id="modal" class="modal">
   
-  <!-- MAIN MODAL -->
+  <!-- NEW USER BUTTONS MODAL -->
   <div class="new-player-btns-modal-content" id="newPlayerBtnsModal">
     <span class="close">&times;</span>
     <h2>Who are you?</h2>
-    <button class="add-new-player" id="addNewPlayer">New Player</button>
-    <button class="returning-player" id="returningPlayer">Returning Player</button>
+    <button id="addNewPlayer">New Player</button>
+    <button id="returningPlayer">Returning Player</button>
   </div>
 
   <!-- CHANGE TO EXISTING PLAYER -->
@@ -89,10 +89,19 @@
     <button id="newPlayerSubmit">Submit</button>
   </div>
 
-  <!-- HIGH SCORES -->
-  <div class="high-score-modal-content" id="highScoreModal">
+
+  <!-- HIGH SCORES BUTTONS -->
+  <div class="high-scores-btns-modal-content" id="highScoresBtnsModal">
     <span class="close">&times;</span>
     <h2>High Scores!!!</h2>
+    <button id="currentHighScoreBtn"><span class="scoreName"></span>Scores</button>
+    <button id="">LeaderBoard</button>
+  </div>
+
+  <!-- HIGH SCORES -->
+  <div class="high-score-modal-content" id="currentHighScoreModal">
+    <span class="close">&times;</span>
+    <h2><span class="scoreName"></span>High Scores:</h2>
     <table>
       <thead>
           <tr>
@@ -104,10 +113,28 @@
       </thead>
       <tbody>
           <tr>
-            <td>&nbsp;</td>
-            <td>Mild</td>
-            <td>Spicy</td>
-            <td>Inferno</td>
+            <td><span class="scoreNameT"></span></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td><span class="scoreNameT"></span></td>
+            <td>5</td>
+            <td>5</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td><span class="scoreNameT"></span></td>
+            <td>6</td>
+            <td>1</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td><span class="scoreNameT"></span></td>
+            <td>9</td>
+            <td>13</td>
+            <td>1</td>
           </tr>
       </tbody>
     </table>
