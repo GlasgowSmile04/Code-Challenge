@@ -139,6 +139,28 @@ function highScore(){
 }
 
 
+function move(modeTime) {
+  let elem = document.getElementById("timerBar"),
+  width = 100,
+  depricator = Math.round((100 / modeTime + .01) * 100) / 100,
+  id = setInterval(frame, 1000);
+
+  console.log(depricator);
+  function frame() {
+      if (width <= 0) {
+          elem.style.width = 0;
+          clearInterval(id);
+      } else {
+        width-=depricator; 
+        elem.style.width = width + '%'; 
+        modeTime--
+        elem.innerHTML = modeTime;
+        console.log(width);
+      }
+  }
+}
+
+
 ////////////////////////////////////////////////////////////////
 
 /////////////////////
